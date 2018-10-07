@@ -81,7 +81,6 @@ public class BusTail extends AnnotatedCommand {
 
   @Override
   public void process(CommandProcess process) {
-    System.out.println("executing command");
     EventBus eb = process.vertx().eventBus();
     List<MessageConsumer<Object>> consumers = addresses.stream().map(address -> {
       Handler<Message<Object>> handler = msg -> {
@@ -106,12 +105,10 @@ public class BusTail extends AnnotatedCommand {
       };
       return local ? eb.localConsumer(address, handler) : eb.consumer(address, handler);
     }).collect(Collectors.toList());
-    System.out.println("installed consumers " + consumers.stream().map(c -> c.address()).collect(Collectors.toList()));
     process.interruptHandler(done -> {
       process.end();
     });
     process.endHandler(done -> {
-      System.out.println("unregistering consumers");
       consumers.forEach(MessageConsumer::unregister);
     });
   }
