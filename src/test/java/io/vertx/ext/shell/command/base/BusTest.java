@@ -309,6 +309,7 @@ public class BusTest {
 
   @Test
   public void testBusTail(TestContext context) {
+    System.out.println("START TEST BUS TAIL");
     String expected = "the_address1:the_message1\nthe_address2:the_message2\nthe_address1:the_message3\n";
     assertBusTail(context, "bus-tail the_address1 the_address2", () -> {
       assertSend(context, "the_address1", "the_message1", 50);
@@ -319,6 +320,7 @@ public class BusTest {
 
   @Test
   public void testBusTailVerbose(TestContext context) {
+    System.out.println("START TEST BUS TAIL VERBOSE");
     String expected = "the_address:\nReply address: .*\nHeader header_name:\\[header_value\\]\nthe_message\n";
     Pattern p = Pattern.compile(expected);
     assertBusTail(context, "bus-tail --verbose the_address", () -> {
