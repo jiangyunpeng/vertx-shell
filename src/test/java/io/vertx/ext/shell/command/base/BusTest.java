@@ -327,7 +327,7 @@ public class BusTest {
   }
 
   private void assertBusTail(TestContext context, String cmd, Runnable send, Predicate<String> check) {
-    System.out.println("start test <" + cmd + ">");
+    System.out.println("start test");
     Async runningLatch = context.async();
     Shell shell = server.createShell();
     Pty pty = Pty.create();
