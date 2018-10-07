@@ -327,6 +327,7 @@ public class BusTest {
   }
 
   private void assertBusTail(TestContext context, String cmd, Runnable send, Predicate<String> check) {
+    System.out.println("start test");
     Async runningLatch = context.async();
     Shell shell = server.createShell();
     Pty pty = Pty.create();
@@ -335,16 +336,20 @@ public class BusTest {
     Job job = shell.createJob(cmd).setTty(pty.slave());
     job.statusUpdateHandler(status -> {
       if (status == ExecStatus.RUNNING) {
+        System.out.println("runningLatch complete");
         runningLatch.complete();
       }
     });
     job.run();
     runningLatch.awaitSuccess(5000);
     send.run();
+    System.out.println("start checking");
     long now = System.currentTimeMillis();
-    while (!check.test(result.toString())) {
+    boolean a;
+    while (a = !check.test(result.toString())) {
       context.assertTrue(System.currentTimeMillis() - now < 2000);
     }
+    System.out.println("exit test " + a);
   }
 
   private void assertSend(TestContext context, String address, Object body, int times) {
