@@ -357,7 +357,10 @@ public class BusTest {
       if (ar.failed()) {
         ReplyException ex = (ReplyException) ar.cause();
         if (ex.failureType() == NO_HANDLERS) {
-          assertSend(context, address, body, options, times - 1);
+          // Wait 10 ms to be sure consumer is deployed
+          vertx.setTimer(10, id -> {
+            assertSend(context, address, body, options, times - 1);
+          });
         } else {
           context.fail();
         }
