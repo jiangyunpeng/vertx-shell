@@ -337,7 +337,6 @@ public class BusTest {
     pty.stdoutHandler(result::append);
     Job job = shell.createJob(cmd).setTty(pty.slave());
     job.statusUpdateHandler(status -> {
-      System.out.println("Status update " + status);
       if (status == ExecStatus.RUNNING) {
         System.out.println("runningLatch complete");
         runningLatch.complete();
